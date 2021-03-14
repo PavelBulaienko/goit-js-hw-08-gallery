@@ -24,5 +24,24 @@ galleryList.addEventListener('click', (event) => {
             modalImg.src = img.original;
         }
     });
-    console.log(event.target.alt);
+})
+
+const closeBtn = document.querySelector('.lightbox__button');
+const lightboxOverlay = document.querySelector('.lightbox__overlay');
+
+closeBtn.addEventListener('click', () => {
+    modal.classList.remove('is-open');
+    modalImg.src = '';
+})
+
+lightboxOverlay.addEventListener('click', () => {
+    modal.classList.remove('is-open');
+    modalImg.src = '';
+})
+
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape'){
+    modal.classList.remove('is-open');
+    modalImg.src = '';
+    }
 })
