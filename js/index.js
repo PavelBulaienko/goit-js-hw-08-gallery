@@ -1,26 +1,26 @@
 import imgArr from '/js/gallery-items.js';
 
 
-const galleryList = document.querySelector('.gallery');
+const galleryListRef = document.querySelector('.gallery');
 
-imgArr.forEach(element => {
+const imgItems = imgArr.map(element => {
     const imgEl = document.createElement('img');
-    const liEl = document.createElement('li');
 
     imgEl.classList.add('gallery__image');
     imgEl.src = element.preview;
     imgEl.alt = element.description;
-    liEl.append(imgEl);
-    galleryList.append(liEl);
+
+    return imgEl;
 });
 
+galleryListRef.append(...imgItems);
 
 const modal = document.querySelector('.lightbox')
 const modalImg = document.querySelector('.lightbox__image')
 let indexOfImg;
 
 
-galleryList.addEventListener('click', (event) => {
+galleryListRef.addEventListener('click', (event) => {
     modal.classList.add('is-open');
     imgArr.forEach(img => {
         if (img.description === event.target.alt) {
@@ -34,27 +34,19 @@ galleryList.addEventListener('click', (event) => {
 const closeBtn = document.querySelector('.lightbox__button');
 const lightboxOverlay = document.querySelector('.lightbox__overlay');
 
-closeBtn.addEventListener('click', () => {
-    modal.classList.remove('is-open');
-    modalImg.src = '';
-})
-
-lightboxOverlay.addEventListener('click', () => {
-    modal.classList.remove('is-open');
-    modalImg.src = '';
-})
+closeBtn.addEventListener('click', closeModalWindow);
+lightboxOverlay.addEventListener('click', closeModalWindow);
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
-        modal.classList.remove('is-open');
-        modalImg.src = '';
+        closeModalWindow();
     }
 
-    if (event.key === 'ArrowRight') {
+    else if (event.key === 'ArrowRight') {
         nextImage();
     }
 
-    if (event.key === 'ArrowLeft') {
+    else if (event.key === 'ArrowLeft') {
         prevImage();
     }
 })
@@ -83,4 +75,9 @@ function prevImage() {
     indexOfImg -= 1;
     modalImg.src = imgArr[indexOfImg].original;
     modalImg.alt = imgArr[indexOfImg].description;
+}
+
+function closeModalWindow() {
+    modal.classList.remove('is-open');
+    modalImg.src = '';
 }
